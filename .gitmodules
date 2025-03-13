@@ -1,0 +1,6 @@
+[submodule "kobuki_ros"]
+	path = kobuki_ros
+	url = https://github.com/kobuki-base/kobuki_ros.git
+[submodule "cmd_vel_mux"]
+	path = cmd_vel_mux
+	url = https://github.com/kobuki-base/cmd_vel_mux.git

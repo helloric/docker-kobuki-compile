@@ -1,0 +1,19 @@
+services:
+  kobuki-arm64:
+    platform: "linux/arm64"
+    build:
+      platforms:
+        - "linux/arm64"
+      context: ./
+      dockerfile: ./docker/Dockerfile
+      args:
+        ROS_DISTRO: humble
+  kobuki-amd64:
+    platform: "linux/amd64"
+    build:
+      platforms:
+        - "linux/amd64"
+      context: ./
+      dockerfile: ./docker/Dockerfile
+      args:
+        ROS_DISTRO: humble
