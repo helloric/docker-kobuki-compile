@@ -1,0 +1,31 @@
+<package>
+  <description brief="Docker environment to cross-compile the kobuki-driver.">
+    This repository provides a docker environment to build ROS 2 Humble debian packages for arm64 to run Ubuntu 22.04 on the raspberry pi of the turtlebot 2.
+
+    Note that these are unofficial packages, ros 2 humble is not supported by Yujinrobot.
+  </description>
+  <author>Andreas Bresser/andreas.bresser@dfki.de</author>
+  <maintainer>Andreas Bresser/andreas.bresser@dfki.de</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <url>https://github.com/helloric/docker-kobuki-compile</url>
+  <logo>https://raw.githubusercontent.com/dfki-ric/.github/master/profile/DFKI_RIC_RGB.jpg</logo>
+  
+  <keywords>
+    <keyword>utilities</keyword>
+    <keyword>Docker</keyword>
+  </keywords>
+
+  <stage>0</stage>
+  <use>single project</use>
+
+  <activity>active</activity>
+
+  <classifiers>
+    <classifier>utilities</classifier>
+    <classifier>ros</classifier>
+    <classifier>docker</classifier>
+    <classifier>Development Status :: 3 - Alpha</classifier>
+  </classifiers>
+</package>
+
