@@ -23,11 +23,7 @@ RUN apt-get update \
         ros-${ROS_DISTRO}-ament-cmake-ros \
         ros-${ROS_DISTRO}-angles \
         ros-${ROS_DISTRO}-diagnostic-updater \
-        ros-${ROS_DISTRO}-ecl-build \
-        ros-${ROS_DISTRO}-ecl-errors \
-        ros-${ROS_DISTRO}-ecl-exceptions \
-        ros-${ROS_DISTRO}-ecl-geometry \
-        ros-${ROS_DISTRO}-ecl-linear-algebra \
+        ros-${ROS_DISTRO}-ecl-* \
         ros-${ROS_DISTRO}-geometry-msgs \
         ros-${ROS_DISTRO}-joint-state-publisher \
         ros-${ROS_DISTRO}-kobuki-ros-interfaces \
@@ -45,6 +41,29 @@ RUN apt-get update \
 
 WORKDIR ${COLCON_WS}
 
+# Clone necessary repositories from source.
+RUN git clone -b devel https://github.com/stonier/ecl_lite.git
+RUN git clone -b devel https://github.com/stonier/ecl_core.git
+RUN git clone -b devel https://github.com/kobuki-base/kobuki_core.git
+
+ENV CXXFLAGS_OVERRIDE="-Wno-error=overloaded-virtual"
+
+COPY ./build_repo.bash /tmp/build_repo.bash
+RUN chmod +x /tmp/build_repo.bash
+
+RUN bash -c "/tmp/build_repo.bash ecl_lite"
+RUN bash -c "/tmp/build_repo.bash ecl_core"
+
+ENV CXXFLAGS_OVERRIDE="-Wno-error=overloaded-virtual"
+
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    cd kobuki_core && \
+    bloom-generate rosdebian --ros-distro ${ROS_DISTRO} && \
+    export CXXFLAGS="${CXXFLAGS} ${CXXFLAGS_OVERRIDE}" && \
+    DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot debian/rules "binary --parallel"
+
+RUN dpkg -i ros-${ROS_DISTRO}-kobuki-core*.deb
+
 COPY ./kobuki.list /etc/ros/rosdep/sources.list.d/99-kobuki.list
 COPY ./kobuki.yaml /opt/ros/kobuki.yaml
 
@@ -53,7 +72,7 @@ COPY ./cmd_vel_mux ${COLCON_WS_SRC}/cmd_vel_mux
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/cmd_vel_mux \
     && bloom-generate rosdebian \
-    && fakeroot debian/rules binary "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/ros-${ROS_DISTRO}-cmd-vel-mux*.deb
 
@@ -68,62 +87,58 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_description \
     && bloom-generate rosdebian \
-    && fakeroot debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-description*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_keyop \
     && bloom-generate rosdebian \
-    && fakeroot debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-keyop*.deb
 
-# this fails because ROS2 jazzy is missing ecl_sigslots
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_node \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-node*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_auto_docking \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-auto-docking*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_bumper2pc \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-bumper2pc*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_random_walker \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-random-walker*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_safety_controller \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-safety-controller*.deb
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_ros \
     && bloom-generate rosdebian \
-    && fakeroot make -f debian/rules "binary --parallel"
+    && DEB_BUILD_OPTIONS="parallel=$(nproc)" fakeroot make -f debian/rules "binary --parallel"
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-ros*.deb
 
-RUN mkdir /deb \
-  && mv ${COLCON_WS_SRC}/*.deb /deb/ \
-  && mv ${COLCON_WS_SRC}/*.ddeb /deb/ \
-  && mv ${COLCON_WS_SRC}/kobuki_ros/*.deb /deb/ \
-  && mv ${COLCON_WS_SRC}/kobuki_ros/*.ddeb /deb/
+RUN mkdir /deb && \
+    find ${COLCON_WS} -name "*.deb" -exec mv {} /deb/ \;
