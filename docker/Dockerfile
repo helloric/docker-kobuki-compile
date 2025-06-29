@@ -20,14 +20,26 @@ RUN apt-get update \
         fakeroot \
         debhelper \
         dh-python \
-        ros-${ROS_DISTRO}-kobuki-ros-interfaces \
-        ros-${ROS_DISTRO}-kobuki-velocity-smoother \
-        ros-${ROS_DISTRO}-ros2test \
-        ros-${ROS_DISTRO}-ros-testing \
+        ros-${ROS_DISTRO}-ament-cmake-ros \
         ros-${ROS_DISTRO}-angles \
         ros-${ROS_DISTRO}-diagnostic-updater \
-        ros-${ROS_DISTRO}-xacro \
+        ros-${ROS_DISTRO}-ecl-build \
+        ros-${ROS_DISTRO}-ecl-errors \
+        ros-${ROS_DISTRO}-ecl-exceptions \
+        ros-${ROS_DISTRO}-ecl-geometry \
+        ros-${ROS_DISTRO}-ecl-linear-algebra \
+        ros-${ROS_DISTRO}-geometry-msgs \
         ros-${ROS_DISTRO}-joint-state-publisher \
+        ros-${ROS_DISTRO}-kobuki-ros-interfaces \
+        ros-${ROS_DISTRO}-kobuki-velocity-smoother \
+        ros-${ROS_DISTRO}-rclcpp \
+        ros-${ROS_DISTRO}-rclcpp-components \
+        ros-${ROS_DISTRO}-rcl-interfaces \
+        ros-${ROS_DISTRO}-rcpputils \
+        ros-${ROS_DISTRO}-ros2test \
+        ros-${ROS_DISTRO}-ros-testing \
+        ros-${ROS_DISTRO}-std-msgs \
+        ros-${ROS_DISTRO}-xacro \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -67,6 +79,7 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
 
 RUN dpkg -i ${COLCON_WS_SRC}/kobuki_ros/ros-${ROS_DISTRO}-kobuki-keyop*.deb
 
+# this fails because ROS2 jazzy is missing ecl_sigslots
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh\
     && cd ${COLCON_WS_SRC}/kobuki_ros/kobuki_node \
     && bloom-generate rosdebian \
