@@ -1,4 +1,4 @@
-ARG ROS_DISTRO=humble
+ARG ROS_DISTRO=jazzy
 FROM ros:${ROS_DISTRO}
 
 ENV COLCON_WS=/root/colcon_ws
@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Note that this is not needed with ROS 2 jazzy anymore
 ENV PYTHONWARNINGS="ignore:setup.py install is deprecated::setuptools.command.install"
 
+# Note that ros-humble-kobuki-core from humble got removed to jazzy
 # install all dependencies
 RUN apt-get update \ 
     && apt-get install -y \
@@ -21,7 +22,6 @@ RUN apt-get update \
         dh-python \
         ros-${ROS_DISTRO}-kobuki-ros-interfaces \
         ros-${ROS_DISTRO}-kobuki-velocity-smoother \
-        ros-${ROS_DISTRO}-kobuki-core \
         ros-${ROS_DISTRO}-ros2test \
         ros-${ROS_DISTRO}-ros-testing \
         ros-${ROS_DISTRO}-angles \

@@ -1,18 +1,18 @@
 cmd_vel_mux:
-  ubuntu: [ros-humble-cmd-vel-mux]
+  ubuntu: [ros-jazzy-cmd-vel-mux]
 kobuki_auto_docking:
-  ubuntu: [ros-humble-kobuki-auto-docking]
+  ubuntu: [ros-jazzy-kobuki-auto-docking]
 kobuki_bumper2pc:
-  ubuntu: [ros-humble-kobuki-bumper2pc]
+  ubuntu: [ros-jazzy-kobuki-bumper2pc]
 kobuki_description:
-  ubuntu: [ros-humble-kobuki-description]
+  ubuntu: [ros-jazzy-kobuki-description]
 kobuki_keyop:
-  ubuntu: [ros-humble-kobuki-keyop]
+  ubuntu: [ros-jazzy-kobuki-keyop]
 kobuki_node:
-  ubuntu: [ros-humble-kobuki-node]
+  ubuntu: [ros-jazzy-kobuki-node]
 kobuki_random_walker:
-  ubuntu: [ros-humble-kobuki-random-walker]
+  ubuntu: [ros-jazzy-kobuki-random-walker]
 kobuki_ros:
-  ubuntu: [ros-humble-kobuki-ros]
+  ubuntu: [ros-jazzy-kobuki-ros]
 kobuki_safety_controller:
-  ubuntu: [ros-humble-kobuki-safety-controller]
+  ubuntu: [ros-jazzy-kobuki-safety-controller]

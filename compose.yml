@@ -7,7 +7,7 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile
       args:
-        ROS_DISTRO: humble
+        ROS_DISTRO: jazzy
   kobuki-amd64:
     platform: "linux/amd64"
     build:
@@ -16,4 +16,4 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile
       args:
-        ROS_DISTRO: humble
+        ROS_DISTRO: jazzy

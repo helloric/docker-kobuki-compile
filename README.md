@@ -1,7 +1,7 @@
 # Docker environment to cross-compile the kobuki-driver
-This repository provides a docker environment to build ROS 2 Humble debian packages for arm64 to run Ubuntu 22.04 on the raspberry pi of the turtlebot 2.
+This repository provides a docker environment to build ROS 2 jazzy debian packages for arm64 to run Ubuntu 22.04 on the raspberry pi of the turtlebot 2.
 
-Note that these are unofficial packages, ros 2 humble is not supported by Yujinrobot.
+Note that these are unofficial packages, ros 2 jazzy is not supported by Yujinrobot.
 
 ## Prerequisites
 Docker needs to be installed, only tested with docker-ce
